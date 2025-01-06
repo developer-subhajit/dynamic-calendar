@@ -30,22 +30,38 @@ jobs:
               run: mkdir -p js
 
             - name: Run update script
-              run: python scripts/update_holidays.py
+              run: |
+                  echo "Running update script..."
+                  python scripts/update_holidays.py
+                  echo "Script completed"
+                  ls -la js/
+                  if [ -f js/holidays.json ]; then
+                      echo "holidays.json content:"
+                      cat js/holidays.json | head -n 20
+                  else
+                      echo "holidays.json not found!"
+                  fi
 
             - name: Check for changes or new file
               id: check_changes
               run: |
                   if [ ! -f js/holidays.json ]; then
+                      echo "File does not exist - marking as changed"
                       echo "changes=true" >> $GITHUB_OUTPUT
                   else
+                      echo "File exists - checking for changes"
+                      git status
+                      git diff js/holidays.json || true
                       git diff --quiet js/holidays.json || echo "changes=true" >> $GITHUB_OUTPUT
                   fi
 
             - name: Commit and push if changed
               if: steps.check_changes.outputs.changes == 'true'
               run: |
+                  echo "Attempting to commit changes..."
                   git config --local user.email "github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
                   git add js/holidays.json
+                  git status
                   git commit -m "Update UK bank holidays data [automated]"
                   git push
