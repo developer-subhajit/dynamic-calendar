@@ -86,7 +86,7 @@ export function createMonthElement(year, monthIndex, monthName) {
     return monthDiv;
 }
 
-export function createCalendar(year, containerId) {
+export async function createCalendar(year, containerId) {
     const months = [
         "January",
         "February",

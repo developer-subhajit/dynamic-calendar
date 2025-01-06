@@ -32,17 +32,19 @@ export async function downloadPDF() {
 }
 
 // Initialize the application
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     initializeYearDropdown();
 
     // Initial calendar creation
     const year = parseInt(document.getElementById("yearSelect").value);
-    createCalendar(year, "calendar");
+    await createCalendar(year, "calendar");
 
     // Event listeners
-    document.getElementById("yearSelect").addEventListener("change", (e) => {
-        createCalendar(parseInt(e.target.value), "calendar");
-    });
+    document
+        .getElementById("yearSelect")
+        .addEventListener("change", async (e) => {
+            await createCalendar(parseInt(e.target.value), "calendar");
+        });
 
     document
         .querySelector(".download-btn")
