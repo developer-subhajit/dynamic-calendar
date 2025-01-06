@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+select,
+.download-btn {
+    padding: 10px 20px;
+    font-size: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: white;
+    color: #334155;
+    transition: all 0.2s ease;
+}
+
+select:hover,
+.download-btn:hover {
+    border-color: #94a3b8;
+}
+
+.download-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    font-weight: 500;
+}
+
+.download-btn:hover {
+    background-color: #2563eb;
+}
+
+.calendar-header {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+.month {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: white;
+}
+
+.month-title {
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.weekdays,
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 10px;
+}
+
+.weekdays {
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.day {
+    padding: 4px 2px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.highlighted {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #1e40af;
+    font-weight: 600;
+}
+
+.weekend {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #991b1b;
+    font-weight: 600;
+}
+
+#pdf-container {
+    width: 297mm;
+    height: 210mm;
+    padding: 15mm;
+    background-color: white;
+}
+
+@media print {
+    body {
+        padding: 0;
+        background-color: white;
+    }
+
+    .container {
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .controls {
+        display: none;
+    }
+
+    .calendar-header {
+        margin-bottom: 15mm;
+    }
+}
