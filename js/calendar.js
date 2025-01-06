@@ -20,7 +20,6 @@ async function populateYearDropdown() {
         if (years.includes(currentYear)) {
             yearSelect.value = currentYear;
         } else {
-            // Find the closest year to current year
             const closestYear = years.reduce((prev, curr) => {
                 return Math.abs(parseInt(curr) - parseInt(currentYear)) <
                     Math.abs(parseInt(prev) - parseInt(currentYear))
@@ -225,7 +224,20 @@ async function createCalendar(year, containerId) {
                 yearHolidays
             );
             calendarDiv.appendChild(monthElement);
+
+            // Add placeholder element for the last column in each row
+            if ((monthIndex + 1) % 6 === 0 && monthIndex < 11) {
+                calendarDiv.appendChild(document.createElement("div")); // 7th column placeholder
+            }
         });
+
+        // Add final placeholders if needed
+        const remainingPlaceholders = 7 - (months.length % 7);
+        if (remainingPlaceholders < 7) {
+            for (let i = 0; i < remainingPlaceholders; i++) {
+                calendarDiv.appendChild(document.createElement("div"));
+            }
+        }
     } catch (error) {
         console.error("Error creating calendar:", error);
     }
