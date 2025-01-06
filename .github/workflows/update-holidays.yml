@@ -8,6 +8,8 @@ on:
 jobs:
     update-holidays:
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
 
         steps:
             - uses: actions/checkout@v3
@@ -24,13 +26,20 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install -r scripts/requirements.txt
 
+            - name: Create js directory
+              run: mkdir -p js
+
             - name: Run update script
               run: python scripts/update_holidays.py
 
-            - name: Check for changes
+            - name: Check for changes or new file
               id: check_changes
               run: |
-                  git diff --quiet js/holidays.json || echo "changes=true" >> $GITHUB_OUTPUT
+                  if [ ! -f js/holidays.json ]; then
+                      echo "changes=true" >> $GITHUB_OUTPUT
+                  else
+                      git diff --quiet js/holidays.json || echo "changes=true" >> $GITHUB_OUTPUT
+                  fi
 
             - name: Commit and push if changed
               if: steps.check_changes.outputs.changes == 'true'
