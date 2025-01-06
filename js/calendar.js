@@ -103,12 +103,22 @@ export function createCalendar(year, containerId) {
     ];
 
     const calendarDiv = document.getElementById(containerId);
-    calendarDiv.innerHTML = ""; // Clear previous content
+
+    // Remove existing header if present
+    const existingHeader = document.querySelector(".calendar-header");
+    if (existingHeader) {
+        existingHeader.remove();
+    }
+
+    // Clear calendar content
+    calendarDiv.innerHTML = "";
 
     // Add year header
     const yearHeader = document.createElement("div");
     yearHeader.className = "calendar-header";
-    yearHeader.textContent = `Calendar ${year}`;
+    const yearTitle = document.createElement("h1");
+    yearTitle.textContent = `${year} Calendar`;
+    yearHeader.appendChild(yearTitle);
     calendarDiv.parentElement.insertBefore(yearHeader, calendarDiv);
 
     months.forEach((monthName, monthIndex) => {
