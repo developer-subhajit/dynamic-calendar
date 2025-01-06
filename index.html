@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar with PDF Export</title>
+    <title>Calendar</title>
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script type="module" src="js/app.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="controls">
-            <select id="yearSelect"></select>
-            <button class="download-btn">Download PDF</button>
-        </div>
-        <div id="pdf-container">
-            <div class="calendar-grid" id="calendar"></div>
-        </div>
+    <div id="controls">
+        <select id="year-select"></select>
+        <button id="download-btn">Download PDF</button>
     </div>
+    <div id="pdf-container">
+        <div id="calendar-grid"></div>
+    </div>
+    <script src="js/calendar.js"></script>
 </body>
 </html>
