@@ -2,7 +2,7 @@ name: Update UK Bank Holidays
 
 on:
     schedule:
-        - cron: "*/10 * * * *" # Runs every 10 minutes
+        - cron: "0 0 1 1 *" # Runs at 00:00 on January 1st
     workflow_dispatch: # Allows manual trigger
 
 jobs:
@@ -14,7 +14,8 @@ jobs:
         steps:
             - uses: actions/checkout@v3
               with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
+                  token: ${{ secrets.PAT_TOKEN }}
+                  fetch-depth: 0
 
             - name: Set up Python
               uses: actions/setup-python@v4
@@ -34,13 +35,27 @@ jobs:
                   echo "Running update script..."
                   python scripts/update_holidays.py
                   echo "Script completed"
+                  echo "Contents of js directory:"
                   ls -la js/
                   if [ -f js/holidays.json ]; then
-                      echo "holidays.json content:"
+                      echo "holidays.json content (first 20 lines):"
                       cat js/holidays.json | head -n 20
                   else
                       echo "holidays.json not found!"
+                      echo "Current directory contents:"
+                      ls -la
+                      echo "Scripts directory contents:"
+                      ls -la scripts/
                   fi
+
+            - name: Debug Git Status
+              run: |
+                  echo "Current Git Status:"
+                  git status
+                  echo "Git Branch Info:"
+                  git branch -v
+                  echo "Remote Info:"
+                  git remote -v
 
             - name: Check for changes or new file
               id: check_changes
@@ -51,17 +66,27 @@ jobs:
                   else
                       echo "File exists - checking for changes"
                       git status
+                      echo "Git diff output:"
                       git diff js/holidays.json || true
-                      git diff --quiet js/holidays.json || echo "changes=true" >> $GITHUB_OUTPUT
+                      if git diff --quiet js/holidays.json; then
+                          echo "No changes detected"
+                      else
+                          echo "Changes detected"
+                          echo "changes=true" >> $GITHUB_OUTPUT
+                      fi
                   fi
 
             - name: Commit and push if changed
               if: steps.check_changes.outputs.changes == 'true'
               run: |
                   echo "Attempting to commit changes..."
-                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
                   git config --local user.name "github-actions[bot]"
                   git add js/holidays.json
+                  echo "Git status after add:"
                   git status
                   git commit -m "Update UK bank holidays data [automated]"
+                  echo "Git status after commit:"
+                  git status
                   git push
+                  echo "Push completed"
